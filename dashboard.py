@@ -7,7 +7,7 @@ st.title('upload de arquivo')
 
 
 def faz_busca(busca):
-    pesquisa = st.text_input('Digite sua pesquisa:')
+    pesquisa = st.text_input('Digite sua pesquisa:',key=busca)
     if pesquisa:
         dados_filtrados = busca[busca.apply(lambda row: row.astype(str).str.contains(pesquisa, case=False).any(), axis=1)]
         st.write(f"Resultados para '{pesquisa}':")
@@ -24,8 +24,7 @@ if inserir_arquivo is not None:
     dados = pd.read_csv(inserir_arquivo, delimiter=',')
     dados=dados[['Player','FG', 'GS','Pos','MP','FGA','FG%','3P','3P%','2P','2PA','2P%','ORB','DRB','TRB','AST','BLK','PTS']]
     st.write(dados)
-    filtro = ['Pontos','Rebotes', 'Assistencias']
-    filtrado = st.sidebar.selectbox('NBA', filtro)
+
 
 
 
@@ -33,20 +32,34 @@ assistencias = dados[['Player', 'GS', 'Pos', 'AST']]
 pontos = dados[['Player', 'GS', 'Pos', 'PTS']]
 rebotes = dados[['Player', 'GS','Pos', 'TRB']]
 
+aba1, aba2, aba3 = st.tabs(['Pontos','Assistências','Rebotes' ])
 
-if filtrado == 'Pontos':
-    st.title('Pontos por Jogador')
+with aba1:
     faz_busca(pontos)
     pontos
 
+with aba2:
+    faz_busca(assistencias)
+    assistencias
 
-if filtrado == 'Rebotes':
-    st.title('Rebotes por jogador')
+with aba3:
     faz_busca(rebotes)
     rebotes
 
 
-if filtrado == 'Assistencias':
-    st.title('Assistência por jogador')
-    faz_busca(assistencias)
-    assistencias
+# if filtrado == 'Pontos':
+#     st.title('Pontos por Jogador')
+#     faz_busca(pontos)
+#     pontos
+
+
+# if filtrado == 'Rebotes':
+#     st.title('Rebotes por jogador')
+#     faz_busca(rebotes)
+#     rebotes
+
+
+# if filtrado == 'Assistencias':
+#     st.title('Assistência por jogador')
+#     faz_busca(assistencias)
+#     assistencias
